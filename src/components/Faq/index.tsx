@@ -7,6 +7,7 @@ import { Accordion, AccordionDetails, AccordionSummary, Theme, Typography } from
 
 import Link from "@/components/Link"
 import { NETWORKS, SITE_MAP } from "@/constants"
+import { isProduction } from "@/utils"
 
 const useStyles = makeStyles()((theme: Theme) => {
   return {
@@ -100,7 +101,7 @@ const Faq = props => {
           Here is how to explore the platform:
         </Typography>
         <Typography variant="Body3" color="textSecondary" className={classes.orderedParagraph}>
-          1. Transfer and withdraw test tokens in <Link href={SITE_MAP.Bridge}>Bridge</Link>.
+          1. Transfer and withdraw {isProduction ? "" : "test"} tokens in <Link href={SITE_MAP.Bridge}>Bridge</Link>.
         </Typography>
         <Typography variant="Body3" color="textSecondary" className={classes.orderedParagraph}>
           2. View status of transactions and blocks in the{" "}
