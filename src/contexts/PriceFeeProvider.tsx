@@ -77,7 +77,10 @@ const Contracts = {
   },
   SCROLL_MESSENGER: { abi: require("@/assets/abis/L2ScrollMessenger.json"), env: "REACT_APP_L2_SCROLL_MESSENGER" },
   L1_GAS_PRICE_ORACLE: { abi: require("@/assets/abis/L1GasPriceOracle.json"), env: "REACT_APP_L1_GAS_PRICE_ORACLE" },
-  L2_GAS_PRICE_ORACLE: { abi: require("@/assets/abis/L2GasPriceOracle.json"), env: "REACT_APP_L2_GAS_PRICE_ORACLE" },
+  L1_MESSAGE_QUEUE_WITH_GAS_PRICE_ORACLE: {
+    abi: require("@/assets/abis/L1_MESSAGE_QUEUE_WITH_GAS_PRICE_ORACLE.json"),
+    env: "REACT_APP_L1_MESSAGE_QUEUE_WITH_GAS_PRICE_ORACLE",
+  },
 
   L1_GATEWAY_ROUTER_PROXY: { abi: require("@/assets/abis/L1_GATEWAY_ROUTER_PROXY_ADDR.json"), env: "REACT_APP_L1_GATEWAY_ROUTER_PROXY_ADDR" },
 }
@@ -149,8 +152,8 @@ export const PriceFeeProvider = ({ children }) => {
 
   const getGasPrice = async () => {
     try {
-      const L2GasPriceOracleContract = getContract("L2_GAS_PRICE_ORACLE", networksAndSigners[CHAIN_ID.L1].provider)
-      const gasPrice = await L2GasPriceOracleContract.l2BaseFee()
+      const L1MessageQueueWithGasPriceOracleContract = getContract("L1_MESSAGE_QUEUE_WITH_GAS_PRICE_ORACLE", networksAndSigners[CHAIN_ID.L1].provider)
+      const gasPrice = await L1MessageQueueWithGasPriceOracleContract.l2BaseFee()
       return (gasPrice * BigInt(120)) / BigInt(100)
     } catch (err) {
       // console.log(err)
