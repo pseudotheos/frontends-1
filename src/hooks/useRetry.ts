@@ -1,7 +1,6 @@
 import { ethers } from "ethers"
 import { useState } from "react"
 
-import L1MessageQueue from "@/assets/abis/L1MessageQueue.json"
 import L1ScrollMessenger from "@/assets/abis/L1ScrollMessenger.json"
 import L1MessageQueueWithGasPriceOracle from "@/assets/abis/L1_MESSAGE_QUEUE_WITH_GAS_PRICE_ORACLE.json"
 import { CHAIN_ID } from "@/constants"
@@ -19,7 +18,6 @@ export function useRetry(props) {
   const replayMessage = async () => {
     const l2provider = networksAndSigners[CHAIN_ID.L2].provider
     const deployer = networksAndSigners[CHAIN_ID.L1].signer
-    const queue = new ethers.Contract(requireEnv("REACT_APP_L1_MESSAGE_QUEUE"), L1MessageQueue, deployer)
     const messenger = new ethers.Contract(requireEnv("REACT_APP_L1_SCROLL_MESSENGER"), L1ScrollMessenger, deployer)
     const l1MessageQueueWithGasPriceOracleContract = new ethers.Contract(
       requireEnv("REACT_APP_L1_MESSAGE_QUEUE_WITH_GAS_PRICE_ORACLE"),
@@ -35,7 +33,7 @@ export function useRetry(props) {
 
       for (const log of receipts.logs) {
         if (log.topics[0] === "0x69cfcb8e6d4192b8aba9902243912587f37e550d75c1fa801491fce26717f37e") {
-          const event = queue.interface.decodeEventLog("QueueTransaction", log.data, log.topics)
+          const event = l1MessageQueueWithGasPriceOracleContract.interface.decodeEventLog("QueueTransaction", log.data, log.topics)
           gasLimit = await l2provider.estimateGas({
             from: event.sender,
             to: event.target,
